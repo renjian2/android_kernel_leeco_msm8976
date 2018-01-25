@@ -274,10 +274,16 @@ static int ocfs2_set_acl(handle_t *handle,
 	case ACL_TYPE_ACCESS:
 		name_index = OCFS2_XATTR_INDEX_POSIX_ACL_ACCESS;
 		if (acl) {
+<<<<<<< HEAD
 			umode_t mode;
 
 			ret = posix_acl_update_mode(inode, &mode, &acl);
 			if (ret)
+=======
+			umode_t mode = inode->i_mode;
+			ret = posix_acl_equiv_mode(acl, &mode);
+			if (ret < 0)
+>>>>>>> 5dec4f2... fs: Revert Google's ACL backport
 				return ret;
 			else {
 				if (ret == 0)
@@ -287,6 +293,10 @@ static int ocfs2_set_acl(handle_t *handle,
 							 handle, mode);
 				if (ret)
 					return ret;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5dec4f2... fs: Revert Google's ACL backport
 			}
 		}
 		break;

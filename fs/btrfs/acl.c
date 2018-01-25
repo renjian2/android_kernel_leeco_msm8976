@@ -118,10 +118,17 @@ static int btrfs_set_acl(struct btrfs_trans_handle *trans,
 	case ACL_TYPE_ACCESS:
 		name = POSIX_ACL_XATTR_ACCESS;
 		if (acl) {
+<<<<<<< HEAD
 			ret = posix_acl_update_mode(inode,
 				&inode->i_mode, &acl);
 			if (ret)
+=======
+			ret = posix_acl_equiv_mode(acl, &inode->i_mode);
+			if (ret < 0)
+>>>>>>> 5dec4f2... fs: Revert Google's ACL backport
 				return ret;
+			if (ret == 0)
+				acl = NULL;
 		}
 		ret = 0;
 		break;
