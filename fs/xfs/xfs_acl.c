@@ -389,6 +389,7 @@ xfs_xattr_acl_set(struct dentry *dentry, const char *name,
 
 	if (type == ACL_TYPE_ACCESS) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		umode_t mode;
 		struct posix_acl *old_acl = acl;
 
@@ -400,15 +401,24 @@ xfs_xattr_acl_set(struct dentry *dentry, const char *name,
 =======
 		umode_t mode = inode->i_mode;
 		error = posix_acl_equiv_mode(acl, &mode);
+=======
+		umode_t mode;
+		struct posix_acl *old_acl = acl;
+>>>>>>> v3.10.106
 
-		if (error <= 0) {
-			posix_acl_release(acl);
-			acl = NULL;
+		error = posix_acl_update_mode(inode, &mode, &acl);
 
+<<<<<<< HEAD
 			if (error < 0)
 				return error;
 		}
 >>>>>>> 5dec4f2... fs: Revert Google's ACL backport
+=======
+		if (error)
+			goto out_release;
+		if (!acl)
+			posix_acl_release(old_acl);
+>>>>>>> v3.10.106
 
 		error = xfs_set_mode(inode, mode);
 		if (error)

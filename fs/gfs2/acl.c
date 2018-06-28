@@ -278,8 +278,9 @@ static int gfs2_xattr_system_set(struct dentry *dentry, const char *name,
 			goto out_release;
 =======
 		umode_t mode = inode->i_mode;
-		error = posix_acl_equiv_mode(acl, &mode);
+		struct posix_acl *old_acl = acl;
 
+<<<<<<< HEAD
 		if (error <= 0) {
 			posix_acl_release(acl);
 			acl = NULL;
@@ -288,6 +289,13 @@ static int gfs2_xattr_system_set(struct dentry *dentry, const char *name,
 				return error;
 		}
 >>>>>>> 5dec4f2... fs: Revert Google's ACL backport
+=======
+		error = posix_acl_update_mode(inode, &mode, &acl);
+		if (error < 0)
+			goto out_release;
+		if (!acl)
+			posix_acl_release(old_acl);
+>>>>>>> v3.10.106
 
 		error = gfs2_set_mode(inode, mode);
 		if (error)

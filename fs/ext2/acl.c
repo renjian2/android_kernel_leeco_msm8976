@@ -207,6 +207,7 @@ ext2_set_acl(struct inode *inode, int type, struct posix_acl *acl)
 			name_index = EXT2_XATTR_INDEX_POSIX_ACL_ACCESS;
 			if (acl) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 				error = posix_acl_update_mode(inode,
 					&inode->i_mode, &acl);
 				if (error)
@@ -214,13 +215,13 @@ ext2_set_acl(struct inode *inode, int type, struct posix_acl *acl)
 				error = posix_acl_equiv_mode(acl, &inode->i_mode);
 				if (error < 0)
 >>>>>>> 5dec4f2... fs: Revert Google's ACL backport
+=======
+				error = posix_acl_update_mode(inode, &inode->i_mode, &acl);
+				if (error)
+>>>>>>> v3.10.106
 					return error;
-				else {
-					inode->i_ctime = CURRENT_TIME_SEC;
-					mark_inode_dirty(inode);
-					if (error == 0)
-						acl = NULL;
-				}
+				inode->i_ctime = CURRENT_TIME_SEC;
+				mark_inode_dirty(inode);
 			}
 			break;
 

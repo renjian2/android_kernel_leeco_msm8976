@@ -321,6 +321,7 @@ static int v9fs_xattr_set_acl(struct dentry *dentry, const char *name,
 		name = POSIX_ACL_XATTR_ACCESS;
 		if (acl) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			struct iattr iattr;
 			struct posix_acl *old_acl = acl;
 
@@ -332,29 +333,28 @@ static int v9fs_xattr_set_acl(struct dentry *dentry, const char *name,
 			retval = posix_acl_equiv_mode(acl, &mode);
 			if (retval < 0)
 >>>>>>> 5dec4f2... fs: Revert Google's ACL backport
+=======
+			struct iattr iattr;
+
+			retval = posix_acl_update_mode(inode, &iattr.ia_mode, &acl);
+			if (retval)
+>>>>>>> v3.10.106
 				goto err_out;
-			else {
-				struct iattr iattr;
-				if (retval == 0) {
-					/*
-					 * ACL can be represented
-					 * by the mode bits. So don't
-					 * update ACL.
-					 */
-					acl = NULL;
-					value = NULL;
-					size = 0;
-				}
-				/* Updte the mode bits */
-				iattr.ia_mode = ((mode & S_IALLUGO) |
-						 (inode->i_mode & ~S_IALLUGO));
-				iattr.ia_valid = ATTR_MODE;
-				/* FIXME should we update ctime ?
-				 * What is the following setxattr update the
-				 * mode ?
+			if (!acl) {
+				/*
+				 * ACL can be represented
+				 * by the mode bits. So don't
+				 * update ACL.
 				 */
-				v9fs_vfs_setattr_dotl(dentry, &iattr);
+				value = NULL;
+				size = 0;
 			}
+			iattr.ia_valid = ATTR_MODE;
+			/* FIXME should we update ctime ?
+			 * What is the following setxattr update the
+			 * mode ?
+			 */
+			v9fs_vfs_setattr_dotl(dentry, &iattr);
 		}
 		break;
 	case ACL_TYPE_DEFAULT:

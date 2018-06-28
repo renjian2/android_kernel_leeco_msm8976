@@ -224,6 +224,7 @@ static int f2fs_set_acl(struct inode *inode, int type, struct posix_acl *acl)
 		name_index = F2FS_XATTR_INDEX_POSIX_ACL_ACCESS;
 		if (acl) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			error = posix_acl_update_mode(inode,
 				&inode->i_mode, &acl);
 			if (error)
@@ -231,10 +232,12 @@ static int f2fs_set_acl(struct inode *inode, int type, struct posix_acl *acl)
 			error = posix_acl_equiv_mode(acl, &inode->i_mode);
 			if (error < 0)
 >>>>>>> 5dec4f2... fs: Revert Google's ACL backport
+=======
+			error = posix_acl_update_mode(inode, &inode->i_mode, &acl);
+			if (error)
+>>>>>>> v3.10.106
 				return error;
 			set_acl_inode(fi, inode->i_mode);
-			if (error == 0)
-				acl = NULL;
 		}
 		break;
 

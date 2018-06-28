@@ -694,6 +694,7 @@ static int can_set_system_xattr(struct inode *inode, const char *name,
 		}
 		if (acl) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 			struct posix_acl *old_acl = acl;
 
 			rc = posix_acl_update_mode(inode, &inode->i_mode, &acl);
@@ -702,6 +703,11 @@ static int can_set_system_xattr(struct inode *inode, const char *name,
 			rc = posix_acl_equiv_mode(acl, &inode->i_mode);
 			posix_acl_release(acl);
 >>>>>>> 5dec4f2... fs: Revert Google's ACL backport
+=======
+			struct posix_acl *old_acl = acl;
+			rc = posix_acl_update_mode(inode, &inode->i_mode, &acl);
+			posix_acl_release(old_acl);
+>>>>>>> v3.10.106
 			if (rc < 0) {
 				printk(KERN_ERR
 				       "posix_acl_equiv_mode returned %d\n",
